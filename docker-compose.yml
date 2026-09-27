@@ -1,9 +1,14 @@
-web:
+services:
+  web:
     build: .
-    command: python app.py
     ports:
-        - "5000:5000"
-    links:
-        - redis
-redis:
-    image: redis
+      - "5000:5000"
+    depends_on:
+      - redis
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /code
+  redis:
+    image: redis:alpine
